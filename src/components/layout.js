@@ -1,53 +1,76 @@
-/**
- * Layout component that queries for data
- * with Gatsby's StaticQuery component
- *
- * See: https://www.gatsbyjs.org/docs/static-query/
- */
-
 import React from "react"
-import PropTypes from "prop-types"
-import { StaticQuery, graphql } from "gatsby"
-
+import { Global, css } from "@emotion/core"
 import Header from "./header"
-import "./layout.css"
+import Helmet from "react-helmet"
+import useSiteMetadata from "../hooks/use-sitemetadata"
 
-const Layout = ({ children }) => (
-  <StaticQuery
-    query={graphql`
-      query SiteTitleQuery {
-        site {
-          siteMetadata {
-            title
+const Layout = ({ children }) => {
+  const { title, description } = useSiteMetadata()
+
+  return (
+    <>
+      <Global
+        styles={css`
+          * {
+            box-sizing: border-box;
+            margin: 0;
           }
-        }
-      }
-    `}
-    render={data => (
-      <>
-        <Header siteTitle={data.site.siteMetadata.title} />
-        <div
-          style={{
-            margin: `0 auto`,
-            maxWidth: 960,
-            padding: `0px 1.0875rem 1.45rem`,
-            paddingTop: 0,
-          }}
-        >
-          <main>{children}</main>
-          <footer>
-            © {new Date().getFullYear()}, Built with
-            {` `}
-            <a href="https://www.gatsbyjs.org">Gatsby</a>
-          </footer>
-        </div>
-      </>
-    )}
-  />
-)
+          * + * {
+            margin-top: 1rem;
+          }
 
-Layout.propTypes = {
-  children: PropTypes.node.isRequired,
+          html,
+          body {
+            margin: 0;
+            color: #555;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+              Helvetica;
+            font-size: 18px;
+            line-height: 1.4;
+
+            > div {
+              margin-top: 0;
+            }
+            h1,
+            h2,
+            h3,
+            h4,
+            h5,
+            h6 {
+              color: #222;
+              line-height: 1.1;
+
+              + * {
+                margin-top: 0.5rem;
+              }
+            }
+            strong {
+              color: #222;
+            }
+
+            li {
+              margin-top: 0.25rem;
+            }
+          }
+        `}
+      />
+      <Helmet>
+        <html lang="en" />
+        <title>{title}</title>
+        <meta name="description" content={description} />
+      </Helmet>
+      <Header />
+      <main
+        css={css`
+          margin: 2rem auto 4rem;
+          max-width: 90vw;
+          width: 550px;
+        `}
+      >
+        {children}
+      </main>
+    </>
+  )
 }
 
 export default Layout

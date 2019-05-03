@@ -1,21 +1,22 @@
 import React from "react"
 import { Link } from "gatsby"
-
 import Layout from "../components/layout"
-import Image from "../components/image"
-import SEO from "../components/seo"
+import usePosts from "../hooks/use-posts"
+import PostPreview from "../components/post-preview"
 
-const IndexPage = () => (
-  <Layout>
-    <SEO title="Home" keywords={[`gatsby`, `application`, `react`]} />
-    <h1>Hi people</h1>
-    <p>Welcome to your new Gatsby site.</p>
-    <p>Now go build something great.</p>
-    <div style={{ maxWidth: `300px`, marginBottom: `1.45rem` }}>
-      <Image />
-    </div>
-    <Link to="/page-2/">Go to page 2</Link>
-  </Layout>
-)
+export default () => {
+  const posts = usePosts()
 
-export default IndexPage
+  return (
+    <Layout>
+      <h1>Home</h1>
+      <p>Hello</p>
+      <Link to="/about/">Go to about</Link>
+
+      <h2>Read my blog</h2>
+      {posts.map(post => (
+        <PostPreview key={post.slug} post={post} />
+      ))}
+    </Layout>
+  )
+}
